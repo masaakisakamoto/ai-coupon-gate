@@ -63,6 +63,62 @@ A coupon is considered unusable when:
 
 Otherwise, it is valid.
 
+## Repository Contract
+
+ai-coupon-gate does not know how your data is stored.
+
+You provide a repository that implements:
+
+    export interface CouponRepository {
+      getCouponByCode(code: string): Promise<CouponRecord | null>;
+    }
+
+This makes the package reusable with:
+
+- Supabase
+- PostgreSQL
+- MySQL
+- SQLite
+- DynamoDB
+- in-memory stores
+- custom backends
+
+## Getting Started
+
+Install dependencies:
+
+    npm install
+
+Run tests:
+
+    npm run test
+
+Run the in-memory demo:
+
+    npm run demo:in-memory
+
+## In-Memory Demo
+
+The repository includes a runnable demo at:
+
+    examples/in-memory/demo.ts
+
+This demo shows:
+
+- valid coupon
+- expired coupon
+- limit reached
+- inactive coupon
+- not found
+
+Expected example output:
+
+    VIP-ONLY => { ok: true, coupon: ... }
+    OLD-ONE => { ok: false, reason: 'expired' }
+    USED-UP => { ok: false, reason: 'limit_reached' }
+    OFF-ONE => { ok: false, reason: 'inactive' }
+    NOT-FOUND => { ok: false, reason: 'invalid' }
+
 ## Example
 
     import { validateCoupon } from "./src/core/validateCoupon";
@@ -91,35 +147,41 @@ Otherwise, it is valid.
       console.log(result.coupon.code);
     }
 
-## Repository Contract
-
-ai-coupon-gate does not know how your data is stored.
-
-You provide a repository that implements:
-
-    export interface CouponRepository {
-      getCouponByCode(code: string): Promise<CouponRecord | null>;
-    }
-
-This makes the package reusable with:
-
-- Supabase
-- PostgreSQL
-- MySQL
-- SQLite
-- DynamoDB
-- in-memory stores
-- custom backends
-
 ## Test Status
 
-Current core test coverage includes:
+Current test coverage includes:
+
+- validateCouponRecord
+- validateCoupon
+
+Covered scenarios include:
 
 - invalid coupon
 - inactive coupon
 - expired coupon
 - usage limit reached
 - valid coupon
+- code normalization
+- custom normalizeCode support
+
+## Scope
+
+This package is intentionally focused.
+
+It does:
+
+- coupon validation
+- status-based access control
+- repository-based integration
+
+It does not do:
+
+- billing
+- authentication
+- admin UI
+- database migrations
+- usage logging
+- framework-specific UI
 
 ## Project Status
 
@@ -132,13 +194,15 @@ The current priority is:
 3. provide examples for real AI apps
 4. expand only when the contract stays clean
 
-## Planned Next Steps
+## Roadmap
 
-- add tests for validateCoupon
-- add a simple in-memory repository example
-- add a Next.js example app
-- add usage recording contract separately
-- add admin example separately
+Planned next steps:
+
+- add a simple Supabase repository example
+- add an in-memory usage recording example
+- split reusable status helpers
+- improve package export structure
+- prepare npm publishing shape
 
 ## Philosophy
 

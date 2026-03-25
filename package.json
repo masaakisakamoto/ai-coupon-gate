@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-     "test": "vitest"
+    "test": "vitest",
+    "demo:in-memory": "tsx examples/in-memory/demo.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "tsx": "^4.21.0",
     "vitest": "^4.1.1"
   }
 }
