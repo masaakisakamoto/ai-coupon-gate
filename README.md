@@ -147,6 +147,53 @@ Expected example output:
       console.log(result.coupon.code);
     }
 
+## Supabase Example
+
+You can connect ai-coupon-gate to a real Supabase database.
+
+### Setup
+
+Create a `.env` file in the project root:
+
+    NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+    SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+### Run
+
+    npm run demo:supabase -- VIP-ONLY
+
+### Expected Output
+
+    validateCoupon("VIP-ONLY") =>
+    {
+      ok: true,
+      coupon: {
+        id: "...",
+        code: "VIP-ONLY",
+        isActive: true,
+        maxUses: 20,
+        usedCount: 1,
+        expiresAt: null
+      }
+    }
+
+### Notes
+
+- The repository implementation is located at:
+  examples/supabase/repository.ts
+- You can adapt it for your own schema
+- This example uses the `coupons` table
+
+### Table Requirements
+
+Your Supabase table should include:
+
+- code (string)
+- is_active (boolean)
+- max_uses (number)
+- used_count (number)
+- expires_at (timestamp, nullable)
+
 ## Test Status
 
 Current test coverage includes:
